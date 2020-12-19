@@ -1,0 +1,27 @@
+﻿@model List<SanPham>
+<div class="main-menu-header">
+    <div class="container">
+        <div id="nav-menu">
+            <ul>
+                <li class="current-menu-item"><a href="#">Trang chủ</a></li>
+                <li><a href="#">Giới thiệu</a></li>
+                <li>
+                    <a href="#">Sản phẩm</a>
+
+                    <ul>
+                        @foreach (var item in Model)
+                        {
+                            <li><a href="#">@item.LoaiSP.TenLoai</a></li>
+                        }
+                    </ul>
+
+
+                </li>
+                <li><a href="#">Tin tức</a></li>
+                <li><a href="#">Tuyển dụng</a></li>
+                <li><a href="#">Liên hệ</a></li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

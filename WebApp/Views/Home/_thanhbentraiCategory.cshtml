@@ -1,0 +1,9 @@
+﻿@model List<SanPham>
+<div class="content-cat">
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li><i class="fa fa-angle-right"></i> <a href="#">@item.LoaiSP.TenLoai</a></li>
+        }
+    </ul>
+</div>

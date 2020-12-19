@@ -1,0 +1,107 @@
+﻿@model IEnumerable<WebApp.Areas.Admin.Models.SanPham>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+<form asp-controller="SanPham" asp-action="Index" method="get">
+    <p>
+        <select asp-items="@(new SelectList(ViewBag.ListLoaiSP,"MaLoai","TenLoai"))" name="Id">
+            <option value="all">ALL</option>
+        </select>
+        Title:<input type="text" name="search" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TenSP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgaySX)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoTa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrangThai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoaiSP)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenSP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgaySX)
+                </td>
+                <td>
+                    <div class="form-group">
+                        <img style="max-height:50%; width:auto" ; id="imgPre" src="~/img/pro/@Html.DisplayFor(ModelItem=>item.Hinh)?@ViewData["rand"]" alt="no Image" class="img-thumbnail" />
+
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MoTa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TrangThai)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoaiSP.TenLoai)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Ma">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Ma">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Ma">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+    function readURL(input, idImg) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(idImg).attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#ful").change(function () {
+        readURL(this, '#imgPre');
+    });
+    </script>
+}

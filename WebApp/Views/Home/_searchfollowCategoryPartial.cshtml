@@ -1,0 +1,20 @@
+﻿@model List<SanPham>
+
+
+<div class="form-seach-product">
+    <form action="/" method="GET" role="form">
+        <select name="" id="input" class="form-control" required="required">
+            <option value="">Chọn danh mục</option>
+
+            @foreach (var item in Model)
+            {
+                <option value="1">@item.LoaiSP.TenLoai</option>
+            }
+        </select>
+        <div class="input-seach">
+            <input type="text" name="s" id="" class="form-control">
+            <button type="submit" class="btn-search-pro"><i class="fa fa-search"></i></button>
+        </div>
+        <div class="clear"></div>
+    </form>
+</div>

@@ -1,0 +1,77 @@
+﻿@using WebApp
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<aside class="sidebar-left">
+    <nav class="navbar navbar-inverse">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <h1><a class="navbar-brand" href="index.html"><span class="fa fa-area-chart"></span> Glance<span class="dashboard_text">Design dashboard</span></a></h1>
+        </div>
+        <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="sidebar-menu">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="treeview">
+                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                        <i class="fa fa-dashboard"></i> <span>Trang Chủ</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-laptop"></i>
+                        <span>Quản lí menu</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="Menus" asp-action="Index"><i class="fa fa-angle-right"></i>Menu</a></li>
+
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-laptop"></i>
+                        <span>Quản lí sản phẩm</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="LoaiSPs" asp-action="Index"><i class="fa fa-angle-right"></i> Loại sản phẩm</a></li>
+                        <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="SanPhams" asp-action="Index"><i class="fa fa-angle-right"></i>Sản phẩm</a></li>
+                        <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="ChiTietSanPhams" asp-action="Index"><i class="fa fa-angle-right"></i>Chi tiết sản phẩm</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-laptop"></i>
+                        <span>Quản lí người dùng</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="NguoiDungs" asp-action="Index"><i class="fa fa-angle-right"></i>Người dùng</a></li>
+
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-laptop"></i>
+                        <span>Quản lí bán hàng</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="DonHangs" asp-action="Index"><i class="fa fa-angle-right"></i>Đon Hàng</a></li>
+                        <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="GioHangs" asp-action="Index"><i class="fa fa-angle-right"></i>Giỏ hàng</a></li>
+                    </ul>
+                </li>
+                <li class="header">LABELS</li>
+                <li><a href="#"><i class="fa fa-angle-right text-red"></i> <span>Important</span></a></li>
+                <li><a href="#"><i class="fa fa-angle-right text-yellow"></i> <span>Warning</span></a></li>
+                <li><a href="#"><i class="fa fa-angle-right text-aqua"></i> <span>Information</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </nav>
+</aside>
+ </div>

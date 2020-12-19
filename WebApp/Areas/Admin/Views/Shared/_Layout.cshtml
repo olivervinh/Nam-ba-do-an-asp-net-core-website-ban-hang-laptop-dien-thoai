@@ -1,0 +1,32 @@
+﻿<html class="js" style="overflow: visible;">
+<head>
+    @await Html.PartialAsync("_HeadPartial.cshtml")
+</head>
+<body class="cbp-spmenu-push">
+    <div class="main-content">
+        <div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+            <!--left-fixed -navigation-->
+            @await Html.PartialAsync("_navPartial.cshtml")
+        </div>
+        <!--left-fixed -navigation-->
+        <!-- header-starts -->
+        @await Html.PartialAsync("_HeaderPartial.cshtml")
+        <!-- //header-ends -->
+        <!-- main content start-->
+
+        <div id="page-wrapper" style="min-height: 703px;">
+            @RenderBody()
+        </div>
+
+
+
+        <!--footer-->
+        @await Html.PartialAsync("_FooterPartial.cshtml")
+        <!--//footer-->
+    </div>
+    <!-- new added graphs chart js-->
+    @await Html.PartialAsync("_ScriptsPartial.cshtml")
+    @RenderSection("Scripts", required: false)
+    <!-- //Bootstrap Core JavaScript -->
+</body>
+</html>
