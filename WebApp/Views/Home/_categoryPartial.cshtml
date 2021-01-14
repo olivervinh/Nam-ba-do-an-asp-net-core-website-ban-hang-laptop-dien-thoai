@@ -1,17 +1,16 @@
-﻿@model List<SanPham>
+﻿@model WebApp.Areas.Admin.Models.LoaiSP
 <div class="main-menu-header">
     <div class="container">
         <div id="nav-menu">
             <ul>
-                <li class="current-menu-item"><a href="#">Trang chủ</a></li>
+                <li class="current-menu-item"><a asp-action="_homePartial">Trang chủ</a></li>
                 <li><a href="#">Giới thiệu</a></li>
                 <li>
                     <a href="#">Sản phẩm</a>
-
                     <ul>
-                        @foreach (var item in Model)
+                        @foreach (LoaiSP item in ViewBag.ListLSP)
                         {
-                            <li><a href="#">@item.LoaiSP.TenLoai</a></li>
+                            <li><a asp-controller="" asp-action="_productinCategory" asp-route-id="@item.MaLoai"> @item.TenLoai</a></li>
                         }
                     </ul>
 

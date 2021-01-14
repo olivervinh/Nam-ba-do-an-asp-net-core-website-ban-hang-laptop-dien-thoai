@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.Admin.Data;
@@ -21,9 +22,20 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/LoaiSPs
-        public async Task<IActionResult> Index()
+        public override void OnActionExecuted(ActionExecutedContext context)
         {
-            return View(await _context.LoaiSPs.ToListAsync());
+            ViewBag.ListLSP = _context.LoaiSPs.ToList();
+            base.OnActionExecuted(context);
+        }
+        public async Task<IActionResult> Index(int? id)
+        {
+            LoaiSP loaiSP = null;
+            if (id != null)
+            {
+                loaiSP = await _context.LoaiSPs
+                   .FirstOrDefaultAsync(m => m.MaLoai == id);
+            }
+            return View(loaiSP);
         }
 
         // GET: Admin/LoaiSPs/Details/5
@@ -63,7 +75,7 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(loaiSP);
+            return View("Index");
         }
 
         // GET: Admin/LoaiSPs/Edit/5
@@ -79,7 +91,7 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            return View(loaiSP);
+            return View("Index");
         }
 
         // POST: Admin/LoaiSPs/Edit/5
@@ -114,7 +126,7 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(loaiSP);
+            return View("Index");
         }
 
         // GET: Admin/LoaiSPs/Delete/5

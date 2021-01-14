@@ -5,7 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApp.Areas.Admin.Models
+
+namespace WebApp.Areas.Admin.Models 
 {
     public class LoaiSP
     {

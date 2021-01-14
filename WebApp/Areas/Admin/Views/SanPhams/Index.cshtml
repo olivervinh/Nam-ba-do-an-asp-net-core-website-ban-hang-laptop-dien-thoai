@@ -6,15 +6,7 @@
 }
 
 <h2>Index</h2>
-<form asp-controller="SanPham" asp-action="Index" method="get">
-    <p>
-        <select asp-items="@(new SelectList(ViewBag.ListLoaiSP,"MaLoai","TenLoai"))" name="Id">
-            <option value="all">ALL</option>
-        </select>
-        Title:<input type="text" name="search" />
-        <input type="submit" value="Filter" />
-    </p>
-</form>
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -43,7 +35,23 @@
                 @Html.DisplayNameFor(model => model.TrangThai)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LoaiSP)
+                @Html.DisplayNameFor(model => model.Dophangiai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ram)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cpu)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.Color)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LSP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.THSP)
             </th>
             <th></th>
         </tr>
@@ -63,7 +71,7 @@
                 </td>
                 <td>
                     <div class="form-group">
-                        <img style="max-height:50%; width:auto" ; id="imgPre" src="~/img/pro/@Html.DisplayFor(ModelItem=>item.Hinh)?@ViewData["rand"]" alt="no Image" class="img-thumbnail" />
+                        <img style="max-height:60px; width:50px" ; id="imgPre" src="~/img/pro/@Html.DisplayFor(ModelItem=>item.Hinh)?@ViewData["rand"]" alt="no Image" class="img-thumbnail" />
 
                     </div>
                 </td>
@@ -77,7 +85,23 @@
                     @Html.DisplayFor(modelItem => item.TrangThai)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LoaiSP.TenLoai)
+                    @Html.DisplayFor(modelItem => item.Dophangiai)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ram)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cpu)
+                </td>
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.Color)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LSP.TenLoai)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.THSP.TenTH)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Ma">Edit</a> |

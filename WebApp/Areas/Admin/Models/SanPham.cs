@@ -12,7 +12,7 @@ namespace WebApp.Areas.Admin.Models
         [Key]
         public int Ma { get; set; }
         [Required]
-        Random RandomCls = new Random();
+       
         [RegularExpression(@"^[0-9]{3}-[0-9]{3}-[0-9]{3}$")]
         [Display(Name = "Số Serial")]
         [StringLength(20)]
@@ -39,9 +39,38 @@ namespace WebApp.Areas.Admin.Models
         public decimal Gia { get; set; }
         [Display(Name = "Trạng thái")]
         public bool TrangThai { get; set; }
+       
+      
+        [Column(TypeName = "varchar(50)")]
+        [Display(Name = "Độ phân giải")]
+        public string Dophangiai { get; set; }
+
+        [Column(TypeName = "varchar(50)")]
+        [Display(Name = "ram")]
+        [Required]
+
+        public string Ram { get; set; }
+        [Column(TypeName = "varchar(50)")]
+        [Display(Name = "cpu")]
+        [Required]
+
+        public string Cpu { get; set; }
+        [Column(TypeName = "nvarchar(max)")]
+        [Display(Name = "content")]
+        public string Content { get; set; }
+        [Column(TypeName = "nvarchar(50)")]
+        [Display(Name = "Màu sắc")]
+        [Required]
+        public string Color { get; set; }
         [Display(Name = "Loại")]
+
         public int MaLoai { get; set; }
         [ForeignKey("MaLoai")]
-        public virtual LoaiSP LoaiSP { get; set; } 
+        public virtual LoaiSP LSP { get; set; }
+        [Display(Name = "Thương hiệu")]
+        public int MaThuonghieu { get; set; }
+        [ForeignKey("MaThuonghieu")]
+
+        public virtual Thuonghieu THSP { get; set; }
     }
 }

@@ -1,0 +1,57 @@
+﻿@model WebApp.Areas.Admin.Models.Thuonghieu
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<h4>Thuonghieu</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MaThuonghieu" />
+            <div class="form-group">
+                <label asp-for="TenTH" class="control-label"></label>
+                <input asp-for="TenTH" class="form-control" />
+                <span asp-validation-for="TenTH" class="text-danger"></span>
+            </div>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="ful" name="ful">
+                <label class="custom-file-label" for="ful">Choose file</label>
+            </div>
+            <input asp-for="Hinh" class="control-label" type="hidden" />
+            <img style="max-height:100px; width:auto" ;img id="imgPre" src="~/img/pro/@Model.Hinh?@{new Random().Next(1, 1000);} class="img-thumbnail" />
+            <span asp-validation-for="Hinh" class="text-danger"></span>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function readURL(input, idImg) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $(idImg).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#ful").change(function () {
+            readURL(this, '#imgPre');
+        });
+
+    </script>
+}

@@ -1,9 +1,9 @@
-﻿@model List<SanPham>
+﻿@model WebApp.Areas.Admin.Models.LoaiSP
 <div class="content-cat">
     <ul>
-        @foreach (var item in Model)
+        @foreach (LoaiSP item in ViewBag.ListLSP)
         {
-            <li><i class="fa fa-angle-right"></i> <a href="#">@item.LoaiSP.TenLoai</a></li>
+        <li><a asp-controller="" asp-action="_productinCategory" asp-route-id="@item.MaLoai">@item.TenLoai</a></li>
         }
     </ul>
 </div>

@@ -1,0 +1,10 @@
+﻿@model WebApp.Areas.Admin.Models.Thuonghieu
+<div class="content-cat">
+    <ul>
+        @foreach (Thuonghieu item in ViewBag.Thuonghieu)
+        {
+            <li><a asp-controller="" asp-action="_productinBrand" asp-route-id="@item.MaThuonghieu"><img src="~/img/pro/th/@item.Hinh?@ViewData["rand"]" alt=""></a></li>
+            
+        }
+    </ul>
+</div>

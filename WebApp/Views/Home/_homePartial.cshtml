@@ -16,62 +16,46 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                         <div class="top-menu">
-                            <ul>
 
-                                <li><a asp-controller="Login" asp-action="Index">Đăng nhập</a></li>
-                          
-                                <li><a href="#">Cửa hàng</a></li>
-                                <li><a href="#">Tài khoản</a></li>
-                                <li><a href="#">Liên hệ</a></li>
-                            </ul>
+                            <partial name="_LoginPartial" />
+
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-         <partial name="_categoryPartial">
+        <partial name="_categoryPartial">
 
 
 
-        <div class="main-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-6 col-xs-6 col-sm-6 col-md-3 col-lg-3 order-md-0 order-0">
-                        <div class="logo">
-                            <a href=""><img src="images/logo.png" alt=""></a>
-                            <h1>Website bán hàng</h1>
+            <div class="main-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6 col-xs-6 col-sm-6 col-md-3 col-lg-3 order-md-0 order-0">
+                            <div class="logo">
+                                <a href=""><img src="images/logo.png" alt=""></a>
+                                <h1>Website bán hàng</h1>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 order-md-1 order-2">
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 order-md-1 order-2">
 
-                         <partial name="_searchfollowCategoryPartial">
-    
+                            <partial name="_searchfollowCategoryPartial">
 
 
-                    </div>
 
+                        </div>
 
 
 
 
-                    <div class="col-6 col-xs-6 col-sm-6 col-md-3 col-lg-3 order-md-2 order-1" style="text-align: right">
-                        <a asp-controller="Product" asp-action="cart" class="icon-cart">
-                            <div class="icon">
-                                <i class="fa fa-shopping-cart" aria-hidden="true">
-                                    
-                                </i>
-                                <span></span>
-                            </div>
-                            <div class="info-cart">
-                                <p>Giỏ hàng</p>
-                                <span>2.500.000đ</span>
-                            </div>
-                            <span class="clear"></span>
-                        </a>
+
+                        <div class="col-6 col-xs-6 col-sm-6 col-md-3 col-lg-3 order-md-2 order-1" style="text-align: right">
+                            <partial name="_CartPartial">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </header>
     <div id="content">
         <div class="container">
@@ -103,60 +87,13 @@
                         <div class="sidebar">
                             <div class="category-box">
                                 <h3>Danh mục sản phẩm</h3>
-                               <partial name="_thanhbentraiCategory">
+                                <partial name="_thanhbentraiCategory">
                             </div>
-                            <div class="widget">
-                                <h3>
-                                    <i class="fa fa-bars"></i> Tin tức
-                                </h3>
-                                <div class="content-w">
-                                    <ul>
-                                        <li>
-                                            <a href="#"><img src="images/news.jpg" alt=""></a>
-                                            <h4><a href="#">Thương hiệu đồng hồ thông minh Sinophy của nước nào?</a></h4>
-                                            <div class="clear"></div>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="images/news.jpg" alt=""></a>
-                                            <h4><a href="#">Thương hiệu đồng hồ thông minh Sinophy của nước nào?</a></h4>
-                                            <div class="clear"></div>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="images/news.jpg" alt=""></a>
-                                            <h4><a href="#">Thương hiệu đồng hồ thông minh Sinophy của nước nào?</a></h4>
-                                            <div class="clear"></div>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="images/news.jpg" alt=""></a>
-                                            <h4><a href="#">Thương hiệu đồng hồ thông minh Sinophy của nước nào?</a></h4>
-                                            <div class="clear"></div>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="images/news.jpg" alt=""></a>
-                                            <h4><a href="#">Thương hiệu đồng hồ thông minh Sinophy của nước nào?</a></h4>
-                                            <div class="clear"></div>
-                                        </li>
-                                    </ul>
-                                </div>
+                            <div class="category-box">
+                                <h3>Thương hiệu sản phẩm</h3>
+                                <partial name="_thuonghieuAA">
                             </div>
-                            <div class="widget">
-                                <h3>
-                                    <i class="fa fa-bars"></i> Quảng cáo
-                                </h3>
-                                <div class="content-banner">
-                                    <a href="#">
-                                        <img src="images/banner.png" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="widget">
-                                <h3>
-                                    <i class="fa fa-facebook"></i> Facebook
-                                </h3>
-                                <div class="content-fb">
-                                    <div class="fb-page" data-href="https://www.facebook.com/huykiradotnet/" data-tabs="timeline" data-width="" data-height="200" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
-                                </div>
-                            </div>
+                           
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 order-lg-1 order-0">
@@ -175,204 +112,15 @@
                                 <div class="clear"></div>
                             </h2>
                             <div class="content-product-box">
-                                <div class="row">
-
-                                    @await Html.PartialAsync("~/Views/Product/_productAreas.cshtml")
-
-
+                                <div class="row">          
+                                    <partial name="_productAreas">
                                 </div>
                             </div>
                         </div>
-                        <a href="#"><img src="https://phongtrodn.com/wp-content/uploads/2020/02/huykira.png" alt=""></a>
+                    
                         <br>
                         <br>
-                        <div class="product-section">
-                            <h2 class="title-product">
-                                <a href="#" class="title">Điện thoại</a>
-                                <div class="bar-menu"><i class="fa fa-bars"></i></div>
-                                <div class="list-child">
-                                    <ul>
-                                        <li><a href="#">Iphone</a></li>
-                                        <li><a href="#">Samsung</a></li>
-                                        <li><a href="#">Sony</a></li>
-                                        <li><a href="#">HTC</a></li>
-                                    </ul>
-                                </div>
-                                <div class="clear"></div>
-                            </h2>
-                            <div class="content-product-box">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                        <div class="item-product">
-                                            <div class="thumb">
-                                                <a href="#"><img src="images/sp.png" alt=""></a>
-                                                <span class="sale">Giảm <br>15%</span>
-                                                <div class="action">
-                                                    <a href="#" class="buy"><i class="fa fa-cart-plus"></i> Mua ngay</a>
-                                                    <a href="#" class="like"><i class="fa fa-heart"></i> Yêu thích</a>
-                                                    <div class="clear"></div>
-                                                </div>
-                                            </div>
-                                            <div class="info-product">
-                                                <h4><a href="#">Điện thoại iPhone Xs Max 256GB</a></h4>
-                                                <div class="price">
-                                                    <span class="price-current">28.990.000₫</span>
-                                                    <span class="price-old">33.990.000₫</span>
-                                                </div>
-                                                <a href="detail.html" class="view-more">Xem chi tiết</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                        <div class="item-product">
-                                            <div class="thumb">
-                                                <a href="#"><img src="images/sp2.png" alt=""></a>
-                                                <span class="sale">Giảm <br>10%</span>
-                                                <div class="action">
-                                                    <a href="#" class="buy"><i class="fa fa-cart-plus"></i> Mua ngay</a>
-                                                    <a href="#" class="like"><i class="fa fa-heart"></i> Yêu thích</a>
-                                                    <div class="clear"></div>
-                                                </div>
-                                            </div>
-                                            <div class="info-product">
-                                                <h4><a href="#">Điện thoại OPPO A5 (2020) 128GB</a></h4>
-                                                <div class="price">
-                                                    <span class="price-current">4.790.000₫</span>
-                                                    <span class="price-old">4.790.000₫</span>
-                                                </div>
-                                                <a href="detail.html" class="view-more">Xem chi tiết</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                        <div class="item-product">
-                                            <div class="thumb">
-                                                <a href="#"><img src="images/sp.png" alt=""></a>
-                                                <span class="sale">Giảm <br>15%</span>
-                                                <div class="action">
-                                                    <a href="#" class="buy"><i class="fa fa-cart-plus"></i> Mua ngay</a>
-                                                    <a href="#" class="like"><i class="fa fa-heart"></i> Yêu thích</a>
-                                                    <div class="clear"></div>
-                                                </div>
-                                            </div>
-                                            <div class="info-product">
-                                                <h4><a href="#">Điện thoại iPhone Xs Max 256GB</a></h4>
-                                                <div class="price">
-                                                    <span class="price-current">28.990.000₫</span>
-                                                    <span class="price-old">33.990.000₫</span>
-                                                </div>
-                                                <a href="detail.html" class="view-more">Xem chi tiết</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                        <div class="item-product">
-                                            <div class="thumb">
-                                                <a href="#"><img src="images/sp2.png" alt=""></a>
-                                                <span class="sale">Giảm <br>10%</span>
-                                                <div class="action">
-                                                    <a href="#" class="buy"><i class="fa fa-cart-plus"></i> Mua ngay</a>
-                                                    <a href="#" class="like"><i class="fa fa-heart"></i> Yêu thích</a>
-                                                    <div class="clear"></div>
-                                                </div>
-                                            </div>
-                                            <div class="info-product">
-                                                <h4><a href="#">Điện thoại OPPO A5 (2020) 128GB</a></h4>
-                                                <div class="price">
-                                                    <span class="price-current">4.790.000₫</span>
-                                                    <span class="price-old">4.790.000₫</span>
-                                                </div>
-                                                <a href="detail.html" class="view-more">Xem chi tiết</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                        <div class="item-product">
-                                            <div class="thumb">
-                                                <a href="#"><img src="images/sp2.png" alt=""></a>
-                                                <span class="sale">Giảm <br>10%</span>
-                                                <div class="action">
-                                                    <a href="#" class="buy"><i class="fa fa-cart-plus"></i> Mua ngay</a>
-                                                    <a href="#" class="like"><i class="fa fa-heart"></i> Yêu thích</a>
-                                                    <div class="clear"></div>
-                                                </div>
-                                            </div>
-                                            <div class="info-product">
-                                                <h4><a href="#">Điện thoại OPPO A5 (2020) 128GB</a></h4>
-                                                <div class="price">
-                                                    <span class="price-current">4.790.000₫</span>
-                                                    <span class="price-old">4.790.000₫</span>
-                                                </div>
-                                                <a href="detail.html" class="view-more">Xem chi tiết</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                        <div class="item-product">
-                                            <div class="thumb">
-                                                <a href="#"><img src="images/sp.png" alt=""></a>
-                                                <span class="sale">Giảm <br>15%</span>
-                                                <div class="action">
-                                                    <a href="#" class="buy"><i class="fa fa-cart-plus"></i> Mua ngay</a>
-                                                    <a href="#" class="like"><i class="fa fa-heart"></i> Yêu thích</a>
-                                                    <div class="clear"></div>
-                                                </div>
-                                            </div>
-                                            <div class="info-product">
-                                                <h4><a href="#">Điện thoại iPhone Xs Max 256GB</a></h4>
-                                                <div class="price">
-                                                    <span class="price-current">28.990.000₫</span>
-                                                    <span class="price-old">33.990.000₫</span>
-                                                </div>
-                                                <a href="detail.html" class="view-more">Xem chi tiết</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                        <div class="item-product">
-                                            <div class="thumb">
-                                                <a href="#"><img src="images/sp2.png" alt=""></a>
-                                                <span class="sale">Giảm <br>10%</span>
-                                                <div class="action">
-                                                    <a href="#" class="buy"><i class="fa fa-cart-plus"></i> Mua ngay</a>
-                                                    <a href="#" class="like"><i class="fa fa-heart"></i> Yêu thích</a>
-                                                    <div class="clear"></div>
-                                                </div>
-                                            </div>
-                                            <div class="info-product">
-                                                <h4><a href="#">Điện thoại OPPO A5 (2020) 128GB</a></h4>
-                                                <div class="price">
-                                                    <span class="price-current">4.790.000₫</span>
-                                                    <span class="price-old">4.790.000₫</span>
-                                                </div>
-                                                <a href="detail.html" class="view-more">Xem chi tiết</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                        <div class="item-product">
-                                            <div class="thumb">
-                                                <a href="#"><img src="images/sp.png" alt=""></a>
-                                                <span class="sale">Giảm <br>15%</span>
-                                                <div class="action">
-                                                    <a href="#" class="buy"><i class="fa fa-cart-plus"></i> Mua ngay</a>
-                                                    <a href="#" class="like"><i class="fa fa-heart"></i> Yêu thích</a>
-                                                    <div class="clear"></div>
-                                                </div>
-                                            </div>
-                                            <div class="info-product">
-                                                <h4><a href="#">Điện thoại iPhone Xs Max 256GB</a></h4>
-                                                <div class="price">
-                                                    <span class="price-current">28.990.000₫</span>
-                                                    <span class="price-old">33.990.000₫</span>
-                                                </div>
-                                                <a href="detail.html" class="view-more">Xem chi tiết</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                     
                     </div>
                 </div>
             </div>

@@ -23,42 +23,13 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/SanPhams
-        public async Task<IActionResult> Index(string search, int Id)
+        public async Task<IActionResult> Index()
         {
-            Random rand = new Random();
-            ViewData["rand"] = rand.Next().ToString();
-            //Ket bang va timm kiem theo Id
-            ViewBag.ListLoaiSP = _context.LoaiSPs.ToList();
-            var KetBang = from s in _context.SanPhams
-                          join l in _context.LoaiSPs
-                          on s.MaLoai equals l.MaLoai
-                          select new { s.Ma, s.TenSP, s.Hinh, s.MoTa, s.NgaySX,s.SN,s.MaLoai,s.TrangThai,s.Gia };
-            //Tim kiem chuoi truy van 
-            if (!String.IsNullOrEmpty(search))
-            {
-                KetBang = KetBang.Where(s => s.TenSP.Contains(search));
-            }
-            //Tim kiem theo id
-            if (Id != 0)
-            {
-                KetBang = KetBang.Where(x => x.Ma == Id);
-            }
-
-            List<SanPham> ListSP = new List<SanPham>();
-            foreach (var items in KetBang)
-            {
-                SanPham sp = new SanPham();
-                sp.Ma = items.Ma;
-                sp.TenSP = items.TenSP;
-                sp.Hinh = items.Hinh;
-                sp.SN = items.SN;
-                sp.MaLoai = items.MaLoai;
-                sp.TrangThai = sp.TrangThai;
-                sp.Gia = items.Gia;
-                ListSP.Add(sp);
-            }
-            return View(ListSP);
+            var dataProviderContext = _context.SanPhams.Include(s => s.LSP).Include(s => s.THSP);
+            return View(await dataProviderContext.ToListAsync());
         }
+
+        // GET: Admin/SanPhams/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -67,7 +38,8 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var sanPham = await _context.SanPhams
-                .Include(s => s.LoaiSP)
+                .Include(s => s.LSP)
+                .Include(s => s.THSP)
                 .FirstOrDefaultAsync(m => m.Ma == id);
             if (sanPham == null)
             {
@@ -76,10 +48,12 @@ namespace WebApp.Areas.Admin.Controllers
 
             return View(sanPham);
         }
+
         // GET: Admin/SanPhams/Create
         public IActionResult Create()
         {
             ViewData["MaLoai"] = new SelectList(_context.LoaiSPs, "MaLoai", "TenLoai");
+            ViewData["MaThuonghieu"] = new SelectList(_context.Thuonghieus, "MaThuonghieu", "TenTH");
             return View();
         }
 
@@ -88,7 +62,7 @@ namespace WebApp.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Ma,SN,TenSP,NgaySX,Hinh,MoTa,Gia,TrangThai,MaLoai")] SanPham sanPham, IFormFile ful)
+        public async Task<IActionResult> Create([Bind("Ma,SN,TenSP,NgaySX,Hinh,MoTa,Gia,TrangThai,Dophangiai,Ram,Cpu,Content,Color,MaLoai,MaThuonghieu")] SanPham sanPham, IFormFile ful)
         {
             if (ModelState.IsValid)
             {
@@ -116,6 +90,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MaLoai"] = new SelectList(_context.LoaiSPs, "MaLoai", "TenLoai", sanPham.MaLoai);
+            ViewData["MaThuonghieu"] = new SelectList(_context.Thuonghieus, "MaThuonghieu", "TenTH", sanPham.MaThuonghieu);
             return View(sanPham);
         }
 
@@ -132,7 +107,8 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["MaLoai"] = new SelectList(_context.LoaiSPs, "MaLoai", "TenLoai", sanPham.MaLoai);
+            ViewData["MaLoai"] = new SelectList(_context.LoaiSPs, "MaLoai", "TenLoai");
+            ViewData["MaThuonghieu"] = new SelectList(_context.Thuonghieus, "MaThuonghieu", "TenTH");
             return View(sanPham);
         }
 
@@ -141,7 +117,7 @@ namespace WebApp.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Ma,SN,TenSP,NgaySX,Hinh,MoTa,Gia,TrangThai,MaLoai")] SanPham sanPham, IFormFile ful)
+        public async Task<IActionResult> Edit(int id, [Bind("Ma,SN,TenSP,NgaySX,Hinh,MoTa,Gia,TrangThai,Dophangiai,Ram,Cpu,Content,Color,MaLoai,MaThuonghieu")] SanPham sanPham, IFormFile ful)
         {
             if (id != sanPham.Ma)
             {
@@ -174,7 +150,7 @@ namespace WebApp.Areas.Admin.Controllers
 
                     //luu file vao db
                     _context.Update(sanPham);
-                    _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -190,6 +166,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MaLoai"] = new SelectList(_context.LoaiSPs, "MaLoai", "TenLoai", sanPham.MaLoai);
+            ViewData["MaThuonghieu"] = new SelectList(_context.Thuonghieus, "MaThuonghieu", "TenTH", sanPham.MaThuonghieu);
             return View(sanPham);
         }
 
@@ -202,7 +179,8 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var sanPham = await _context.SanPhams
-                .Include(s => s.LoaiSP)
+                .Include(s => s.LSP)
+                .Include(s => s.THSP)
                 .FirstOrDefaultAsync(m => m.Ma == id);
             if (sanPham == null)
             {

@@ -34,7 +34,7 @@
         </dt>
         <dd>
             <div class="form-group">
-                <img id="imgPre" src="~/img/pro/@Html.DisplayFor(model=>model.Hinh)" alt="no Image" class="img-thumbnail" width="100"/>
+                <img id="imgPre" src="~/img/pro/@Html.DisplayFor(model=>model.Hinh)" alt="no Image" class="img-thumbnail" width="100" />
 
             </div>
         </dd>
@@ -57,10 +57,46 @@
             @Html.DisplayFor(model => model.TrangThai)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.LoaiSP)
+            @Html.DisplayNameFor(model => model.Dophangiai)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.LoaiSP.TenLoai)
+            @Html.DisplayFor(model => model.Dophangiai)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ram)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ram)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cpu)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cpu)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LSP)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LSP.TenLoai)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.THSP)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.THSP.TenTH)
         </dd>
     </dl>
 </div>
