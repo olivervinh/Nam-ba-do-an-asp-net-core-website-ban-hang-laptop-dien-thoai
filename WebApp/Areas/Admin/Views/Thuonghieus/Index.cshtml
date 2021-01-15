@@ -1,8 +1,43 @@
 ﻿@model WebApp.Areas.Admin.Models.Thuonghieu
+@{
+    if (ViewContext.RouteData.Values["id"] != null)
+    {
+        <p>
+            <a asp-action="Index" asp-route-id="">Create New </a>
+        </p>
+    }
+}
+
+</hr>
+<div class="container-fluid mt-3">
+    <form asp-action="Index" method="get">
+        <div class="row g-3 alert-items-center">
+            <div class="col-auto">
+                <label for="s_name" class="col-form-label">Nhập từ khóa</label>
+            </div>
+            <div class="col-auto">
+                <input type="text" id="s_name" name="s_name" class="form-control"
+                       @(Context.Request.Query["s_name"] != "" ? ("Value=" + Context.Request.Query["s_name"]) : null)>
+            </div>
+            <div>
+                <h4>Có @(((ICollection<Thuonghieu>)ViewBag.ListTH).Count) Thương hiệu SP</h4>
+            </div>
+            <div class="col-auto">
+                <select class="form-select" name="s_stt">
+                    <option value="" selected> Tất cả </option>
+                    <option value="0">Ẩn</option>
+                    <option value="1">Hiện</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+            </div>
+    </form>
+</div>
 
 
 <partial name="Create">
-
+    
     <table class="table">
         <thead>
             <tr>
@@ -10,65 +45,118 @@
                     Tên thương hiệu
                 </th>
                 <th>
-                   Hình
+                    Hình
+                </th>
+                <th>
+                    Trạng thái
                 </th>
             </tr>
         </thead>
         <tbody>
+            <button class="btn btn-primary" name="btn_add">Thêm API</button>
             @foreach (Thuonghieu item in ViewBag.ListTH)
             {
-                <tr>
-                    <td>
-                        <h5>@item.TenTH</h5>
-                    </td>
-                    <td>
-                        <img id="imgPre" src="~/img/pro/th/@item.Hinh?@{new Random().Next(1, 1000);}" style="height:100px;width:150px"/>
-                             
-                    </td>
-                    <td>
-                        <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.MaThuonghieu">Chỉnh sửa</a>
-                        <button class="btn btn-primary" data-ma="@item.MaThuonghieu" data-id="@item.MaThuonghieu" data-name="@item.TenTH" name="btn_update">Chỉnh sửa API</button>
-                    </td>
-                </tr>
+        <tr>
+            <td>
+                <h5>@item.TenTH</h5>
+            </td>
+            <td>
+                <img id="imgPre" src="~/img/pro/th/@item.Hinh?@{new Random().Next(1, 1000);}" style="height:100px;width:150px" />
+
+            </td>
+            <td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Trangthai)
+            </td>
+         
+            <td>
+                <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.MaThuonghieu">Chỉnh sửa</a>
+                <button class="btn btn-warning" name="btn_update_stt" data-id="@item.MaThuonghieu" data-stt="@(item.Trangthai == true ? 0 : 1)"
+                        data-name="@item.TenTH">
+                    @{ if (item.Trangthai == true)
+                        {
+                            @:Ẩn
+                        }
+                        else
+                        {
+                            @:Hiện
+                        }
+                    }
+                </button>
+                <button class="btn btn-primary" data-ma="@item.MaThuonghieu" data-id="@item.MaThuonghieu" data-name="@item.TenTH" name="btn_update">Chỉnh sửa API</button>
+
+              
+            </td>
+
+        </tr>
             }
         </tbody>
     </table>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    $('button[name=btn_del]').click(function () {
+        alert("ok");
+        var id = $(this).attr('data-id');
+        $.ajax({
+            method: "Delete",
+            url: "  ../api/thuonghieu_api/DeleteThuonghieu/" + id,
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({ "id": parseInt(id) })
+        })
+            .done(function (msg) {
+                alert(msg);
+                location.reload();
+            }).fail(function () { alert("Error") });
+    })
 
-        <script>
-          
+    $('button[name=btn_add]').click(function () {
+        alert("ok");
+        var ten = $("#ten").val();
+        var stt = ($("#trangthai").val() == 0 ? false : true);
+        var hinh =$("#ful").val();
+        $.ajax({
+            method: "POST",
+            url: "  ../api/thuonghieu_api/PostThuonghieu/",
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({ "TenTH": ten, "Hinh": hinh, "stt": stt })
+        })
+            .done(function (msg) {
+                alert("Thêm success");
+                alert(msg);
+                location.reload();
+            }).fail(function () { alert("Error") });
+    })
 
-           
-            $('button[name=btn_update]').click(function () {
-                var id = $(this).attr('data-id');
-                var name = $(this).attr('data-name');
-               
-                $.ajax({
-                    method: "PUT",
-                    url: "  ../api/thuonghieu_api/PutThuonghieu/" + id,
-                    contentType: 'application/json;charset=UTF-8',
-                    data: JSON.stringify({ "MaThuonghieu": parseInt(id), "TenTH": name })
-                })
-                    .done(function (msg) {
-                        alert(msg);
-                        location.reload();
-                    }).fail(function () { alert("Error") });
-            })
-            function readURL(input, idImg) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $(idImg).attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(input.files[0]);
+    $('button[name=btn_update]').click(function () {
+        alert("ok");
+        var id = $(this).attr('data-id');
+        var name = $(this).attr('data-name');
+
+        $.ajax({
+            method: "PUT",
+            url: "  ../api/thuonghieu_api/PutThuonghieu/" + id,
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({ "MaThuonghieu": parseInt(id), "TenTH": name })
+        })
+            .done(function (msg) {
+                alert(msg);
+                location.reload();
+            }).fail(function () { alert("Error") });
+    })
+
+        function readURL(input, idImg) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $(idImg).attr('src', e.target.result);
                 }
+                reader.readAsDataURL(input.files[0]);
             }
-            $("#ful").change(function () {
-                readURL(this, '#imgPre');
-            });
-
+        }
+    $("#ful").change(function () {
+        readURL(this, '#imgPre');
+    });
         </script>
-    }
+ }
 
-   

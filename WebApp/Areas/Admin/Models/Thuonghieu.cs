@@ -20,6 +20,7 @@ namespace WebApp.Areas.Admin.Models
         [Column(TypeName = "varchar(255)")]
         [Display(Name = "Hình")]
         public string Hinh { get; set; }
+        public bool Trangthai { get; set; }
         public ICollection<SanPham> LstSanPhams { get; set; }
     }
 }

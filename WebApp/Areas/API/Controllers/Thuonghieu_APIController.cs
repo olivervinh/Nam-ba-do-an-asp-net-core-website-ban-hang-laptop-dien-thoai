@@ -48,7 +48,7 @@ namespace WebApp.Areas.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutThuonghieu(int id, Thuonghieu thuonghieu)
         {
-            thuonghieu.TenTH.ToString();
+           
             if (id != thuonghieu.MaThuonghieu)
             {
                 return BadRequest();

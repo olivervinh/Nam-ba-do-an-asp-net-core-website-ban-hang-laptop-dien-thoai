@@ -1,8 +1,44 @@
 ﻿@model WebApp.Areas.Admin.Models.LoaiSP
+@{ 
+    if(ViewContext.RouteData.Values["id"]!=null)
+    {
+        <p>
+            <a asp-action="Index" asp-route-id="">Create New </a>
+        </p>
+    }
+}
+
+</hr>
+<div class="container-fluid mt-3">
+    <form asp-action="Index" method="get">
+        <div class="row g-3 alert-items-center">
+            <div class="col-auto">
+                <label for="s_name" class="col-form-label">Nhập từ khóa</label>
+            </div>
+            <div class="col-auto">
+                <input type="text" id="s_name" name="s_name" class="form-control"
+                @(Context.Request.Query["s_name"]!=""?("Value="+Context.Request.Query["s_name"]):null)>
+            </div>
+            <div>
+                <h4>Có @(((ICollection<LoaiSP>)ViewBag.ListLSP).Count) Loại SP</h4>
+            </div>
+            <div class="col-auto">
+                <select class="form-select" name="s_stt">
+                    <option value="" selected> Tất cả </option>
+                    <option value="0">Ẩn</option>
+                    <option value="1">Hiện</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+           </div>
+    </form>
+</div>
+
 
 
 <partial name="Create">
-
+   <button class="btn btn-primary" name="btn_add">Thêm API</button>
     <table class="table">
         <thead>
             <tr>
@@ -15,8 +51,10 @@
             </tr>
         </thead>
         <tbody>
+       
             @foreach (LoaiSP item in ViewBag.ListLSP)
             {
+
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.TenLoai)
@@ -38,6 +76,7 @@
                                 }
                             }
                         </button>
+                       
                     </td>
                 </tr>
             }
@@ -49,10 +88,10 @@
         <script>
             $('button[name=btn_delete]').click(function () {
                 var id = $(this).attr('data-id');
-         
+
                 $.ajax({
                     method: "Delete",
-                    url: "  ../api/loaisp_api/DeleteLoaiSP/"+id,
+                    url: "  ../api/loaisp_api/DeleteLoaiSP/" + id,
                     contentType: 'application/json;charset=UTF-8',
                     data: JSON.stringify({ "id": id })
                 })
@@ -61,25 +100,47 @@
                         location.reload();
                     }).fail(function () { alert("Error") });
             })
-
-
-
             $('button[name=btn_update_stt]').click(function () {
                 var id = $(this).attr('data-id');
-                var name = $(this).attr('data-name');
-                var stt = ($(this).attr('data-stt') == 0 ? false : true)
+                var stt = ($(this).attr('data-stt') == 0 ? false : true);
                 $.ajax({
-                    method: "PUT",
-                    url: "  ../api/loaisp_api/PutLoaiSP/" + id,
+                    method: "Post",
+                    url: "  ../api/loaisp_api/UpdateStatus",
                     contentType: 'application/json;charset=UTF-8',
-                    data: JSON.stringify({ "id": id,"TenLoai": name, "TrangThai": stt })
+                    data: JSON.stringify({ "ma": parseInt(id), "stt": stt })
+                })
+                    .done(function (msg) {
+                        {
+                            if (msg == 0) {
+                                alert("Cập nhật thất bại");
+                            } else {
+                                var r = JSON.parse(msg);
+                                if (r.stt == 'True') {
+                                    $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Ẩn');
+                                } else {
+
+                                    $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Hiện');
+                                }
+                                alert('Cập nhật thành công');
+                            }
+                        }
+                    }).fail(function () { alert("Error") });
+            })
+
+            $('button[name=btn_add]').click(function () {
+                var id = $("#maloai").val();
+                var ten = $("#tenloai").val();
+                var stt = ($("#trangthai").val() == 0 ? false : true);
+                $.ajax({
+                    method: "Post",
+                    url: "  ../api/loaisp_api/PostLoaiSP",
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify({ "TenLoai":ten,"TrangThai":stt})
                 })
                     .done(function (msg) {
                         alert(msg);
                         location.reload();
                     }).fail(function () { alert("Error") });
             })
-
-
         </script>
     }

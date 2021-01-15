@@ -24,16 +24,35 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/LoaiSPs
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            ViewBag.ListLSP = _context.LoaiSPs.ToList();
+            if (Request.QueryString.Value.IndexOf("s_name") < 0)
+            {
+                ViewBag.ListLSP = _context.LoaiSPs.ToList();
+            }
             base.OnActionExecuted(context);
         }
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, string? s_name, string? s_stt)
         {
             LoaiSP loaiSP = null;
             if (id != null)
             {
                 loaiSP = await _context.LoaiSPs
                    .FirstOrDefaultAsync(m => m.MaLoai == id);
+            }
+            if (s_name != null)
+            {
+                if (s_stt == null)
+                {
+                    ViewBag.ListLSP = (from p in _context.LoaiSPs
+                                       where p.TenLoai.IndexOf(s_name) >= 0
+                                       select p).ToList();
+                }
+                else
+                {
+                    ViewBag.ListLSP = (from p in _context.LoaiSPs
+                                       where p.TenLoai.IndexOf(s_name) >= 0 &&
+                                       p.TrangThai==Convert.ToBoolean(s_stt)
+                                       select p).ToList();
+                }
             }
             return View(loaiSP);
         }

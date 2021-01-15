@@ -26,16 +26,35 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/Thuonghieus
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            ViewBag.ListTH = _context.Thuonghieus.ToList();
+            if (Request.QueryString.Value.IndexOf("s_name") < 0)
+            {
+                ViewBag.ListTH = _context.Thuonghieus.ToList();
+            }
             base.OnActionExecuted(context);
         }
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, string? s_name, string? s_stt)
         {
             Thuonghieu thuonghieu = null;
             if (id != null)
             {
-                thuonghieu = await _context.Thuonghieus
+              thuonghieu = await _context.Thuonghieus
                    .FirstOrDefaultAsync(m => m.MaThuonghieu == id);
+            }
+            if (s_name != null)
+            {
+                if (s_stt == null)
+                {
+                    ViewBag.ListLSP = (from p in _context.Thuonghieus
+                                       where p.TenTH.IndexOf(s_name) >= 0
+                                       select p).ToList();
+                }
+                else
+                {
+                    ViewBag.ListLSP = (from p in _context.Thuonghieus
+                                       where p.TenTH.IndexOf(s_name) >= 0 &&
+                                       p.Trangthai == Convert.ToBoolean(s_stt)
+                                       select p).ToList();
+                }
             }
             return View(thuonghieu);
         }
@@ -69,7 +88,7 @@ namespace WebApp.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Ma,TenTH,Hinh")] Thuonghieu thuonghieu, IFormFile ful)
+        public async Task<IActionResult> Create([Bind("MaThuonghieu,TenTH,Hinh,Trangthai")] Thuonghieu thuonghieu, IFormFile ful)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +115,7 @@ namespace WebApp.Areas.Admin.Controllers
 
                
             }
-            return View(thuonghieu);
+            return View("Index");
         }
 
         // GET: Admin/Thuonghieus/Edit/5
@@ -112,7 +131,7 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            return View(thuonghieu);
+            return View("Index");
         }
 
         // POST: Admin/Thuonghieus/Edit/5
@@ -120,7 +139,7 @@ namespace WebApp.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Ma,TenTH,Hinh")] Thuonghieu thuonghieu, IFormFile ful)
+        public async Task<IActionResult> Edit(int id, [Bind("MaThuonghieu,TenTH,Hinh,Trangthai")] Thuonghieu thuonghieu, IFormFile ful)
         {
             if (id != thuonghieu.MaThuonghieu)
             {
@@ -134,9 +153,9 @@ namespace WebApp.Areas.Admin.Controllers
                     if (ful != null)
                     {
                         //luu file vao trong duong dan
-                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/pro", thuonghieu.Hinh);
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/pro/th");
 
-                        path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/pro",
+                        path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/pro/th",
                   thuonghieu.MaThuonghieu + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]); //cat duoi file (vd: jpg)
 
 
@@ -153,6 +172,7 @@ namespace WebApp.Areas.Admin.Controllers
 
                     //luu file vao db
                     _context.Update(thuonghieu);
+                    await _context.SaveChangesAsync();
 
                 }
                 catch (DbUpdateConcurrencyException)
@@ -168,7 +188,7 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(thuonghieu);
+            return View("Index");
         }
 
         // GET: Admin/Thuonghieus/Delete/5

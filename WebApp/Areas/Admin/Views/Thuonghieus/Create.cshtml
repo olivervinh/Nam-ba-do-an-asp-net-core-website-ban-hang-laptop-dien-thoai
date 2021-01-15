@@ -1,13 +1,14 @@
 ﻿@model WebApp.Areas.Admin.Models.Thuonghieu
+@{
+    ViewData["Title"] = "Create";
+}
 
-
-
-<h1>@(ViewContext.RouteData.Values["id"] != null ? "Chỉnh sửa loại sản phẩm" : "Thêm loại sản phẩm mới")</h1>
+<h1>@(ViewContext.RouteData.Values["id"] != null ? "Chỉnh sửa thương hiệu" : "Thêm thương hiệu mới")</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="@(ViewContext.RouteData.Values["id"] != null ? "Edit" : "Create")" asp-route-id="@(ViewContext.RouteData.Values["id"]!=null
-    ?ViewContext.RouteData.Values["id"]:"")">
+    ?ViewContext.RouteData.Values["id"]:"")" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @{
                 if (ViewContext.RouteData.Values["id"] != null)
@@ -15,9 +16,10 @@
                     <input type="hidden" asp-for="MaThuonghieu">
                 }
             }
+            <h1></h1>
             <div class="form-group">
                 <label asp-for="TenTH" class="control-label"></label>
-                <input asp-for="TenTH" class="form-control" />
+                <input asp-for="TenTH" class="form-control" id="ten" />
                 <span asp-validation-for="TenTH" class="text-danger"></span>
             </div>
             <div class="custom-file">
@@ -25,9 +27,15 @@
                 <label class="custom-file-label" for="ful">Choose file</label>
             </div>
             <div class="form-group">
-                <img id="imgPre" src="@(ViewContext.RouteData.Values["Hinh"]==null?"~/img/noimage.png":"~/img/th/@Html.DisplayFor(item=>item.Hinh)?@{new Random().Next(1, 1000)}")" alt="no Image" class="img-thumbnail" style="height:20%;width:20%" />
+                <img id="imgPre" src="~/img/noimage.png" alt="no Image" class="img-thumbnail" style="height:20%;width:20%" />
             </div>
-            
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Trangthai" id="trangthai" /> @Html.DisplayNameFor(model => model.Trangthai)
+                    </label>
+                </div>
+            </div>
             <div class="form-group">
                 <input type="submit" value="@(ViewContext.RouteData.Values["id"]!=null?"Cập nhật":"Thêm mới")" class="btn btn-primary" />
             </div>
@@ -38,9 +46,6 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
@@ -56,6 +61,15 @@
         $("#ful").change(function () {
             readURL(this, '#imgPre');
         });
-
     </script>
 }
+
+
+
+
+
+
+
+
+
+

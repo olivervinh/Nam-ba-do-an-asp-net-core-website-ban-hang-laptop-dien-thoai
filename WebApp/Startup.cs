@@ -40,8 +40,8 @@ namespace WebApp
             });
             services.AddDistributedMemoryCache();           // Đăng ký dịch vụ lưu cache trong bộ nhớ (Session sẽ sử dụng nó)
             services.AddSession(cfg =>
-            {                    // Đăng ký dịch vụ Session
-                cfg.Cookie.Name = "xuanthulab";             // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
+            {                    // Đăng ký dịch vụ Sessiontên
+                cfg.Cookie.Name = "xuanthulab";             // Đặt  Session - tên này sử dụng ở Browser (Cookie)
                 cfg.IdleTimeout = new TimeSpan(0, 30, 0);    // Thời gian tồn tại của Session
             });
             services.AddRazorPages();
@@ -58,6 +58,23 @@ namespace WebApp
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/Home";
+                    await next();
+                }
+            });
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
             app.UseSession();
             app.UseRouting();
             app.UseStaticFiles();
@@ -66,13 +83,14 @@ namespace WebApp
             app.UseAuthentication();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+               
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=SanPhams}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                  name: "default",
                  pattern: "{controller=Home}/{action=_homePartial}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
