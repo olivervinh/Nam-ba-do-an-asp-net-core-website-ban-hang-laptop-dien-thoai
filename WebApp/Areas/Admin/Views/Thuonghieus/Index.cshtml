@@ -72,7 +72,7 @@
             <td>
                 <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.MaThuonghieu">Chỉnh sửa</a>
                 <button class="btn btn-warning" name="btn_update_stt" data-id="@item.MaThuonghieu" data-stt="@(item.Trangthai == true ? 0 : 1)"
-                        data-name="@item.TenTH">
+                        data-name="@item.TenTH" data-hinh="@item.Hinh">
                     @{ if (item.Trangthai == true)
                         {
                             @:Ẩn
@@ -83,9 +83,9 @@
                         }
                     }
                 </button>
-                <button class="btn btn-primary" data-ma="@item.MaThuonghieu" data-id="@item.MaThuonghieu" data-name="@item.TenTH" name="btn_update">Chỉnh sửa API</button>
+                <button class="btn btn-primary" data-ma="@item.MaThuonghieu" data-id="@item.MaThuonghieu" data-name="@item.TenTH" data-hinh="@item.Hinh" name="btn_update">Chỉnh sửa API</button>
+                <button class="btn btn-primary" name="btn_del" data-id="@item.MaThuonghieu">Xóa API</button>
 
-              
             </td>
 
         </tr>
@@ -95,6 +95,34 @@
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script>
+    $('button[name=btn_update_stt]').click(function () {
+        var id = $(this).attr('data-id');
+        var stt = ($(this).attr('data-stt') == 0 ? false : true);
+        $.ajax({
+            method: "Post",
+            url: "  ../api/thuonghieu_api/UpdateStatus",
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({ "ma": parseInt(id), "stt": stt })
+        })
+            .done(function (msg) {
+                {
+                    if (msg == 0) {
+                        alert("Cập nhật thất bại");
+                    } else {
+                        var r = JSON.parse(msg);
+                        if (r.stt == 'True') {
+                            $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Ẩn');
+                        } else {
+
+                            $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Hiện');
+                        }
+                        alert('Cập nhật thành công');
+                    }
+                }
+            }).fail(function () { alert("Error") });
+    })
+
+
     $('button[name=btn_del]').click(function () {
         alert("ok");
         var id = $(this).attr('data-id');
@@ -132,12 +160,12 @@
         alert("ok");
         var id = $(this).attr('data-id');
         var name = $(this).attr('data-name');
-
+        var hinh = $(this).attr('data-hinh');
         $.ajax({
             method: "PUT",
             url: "  ../api/thuonghieu_api/PutThuonghieu/" + id,
             contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify({ "MaThuonghieu": parseInt(id), "TenTH": name })
+            data: JSON.stringify({ "MaThuonghieu": parseInt(id), "TenTH": name ,"Hinh":hinh })
         })
             .done(function (msg) {
                 alert(msg);

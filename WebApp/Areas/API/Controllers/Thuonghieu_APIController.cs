@@ -22,6 +22,20 @@ namespace WebApp.Areas.API.Controllers
         }
 
         // GET: api/Thuonghieu_api
+        public class Thuonghieu_Update_STT
+        {
+            public int ma { get; set; }
+            public bool stt { get; set; }
+        }
+        [HttpPost]
+        public string UpdateStatus(Thuonghieu_Update_STT req)
+        {
+            (from p in _context.LoaiSPs
+             where p.MaLoai == req.ma
+             select p).ToList().ForEach(x => x.TrangThai = req.stt);
+            _context.SaveChanges();
+            return "{\"id\":" + req.ma + ",\"stt\":\"" + req.stt + "\"}";
+        }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Thuonghieu>>> GetThuonghieus()
         {

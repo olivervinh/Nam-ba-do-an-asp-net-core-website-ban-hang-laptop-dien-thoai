@@ -76,7 +76,8 @@
                                 }
                             }
                         </button>
-                       
+                        <button class="btn btn-primary"  data-id="@item.MaLoai" data-name="@item.TenLoai" name="btn_update">Chỉnh sửa API</button>
+                        <button class="btn btn-primary" name="btn_del" data-id="@item.MaLoai">Xóa API</button>
                     </td>
                 </tr>
             }
@@ -86,7 +87,7 @@
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
         <script>
-            $('button[name=btn_delete]').click(function () {
+            $('button[name=btn_del]').click(function () {
                 var id = $(this).attr('data-id');
 
                 $.ajax({
@@ -142,5 +143,25 @@
                         location.reload();
                     }).fail(function () { alert("Error") });
             })
+
+
+
+            $('button[name=btn_update]').click(function () {
+                alert("ok");
+                var id = $(this).attr('data-id');
+                var name = $(this).attr('data-name');
+                var stt = ($(this).attr('data-stt') == 0 ? false : true);
+                $.ajax({
+                    method: "PUT",
+                    url: "  ../api/loaisp_api/PutLoaiSP/" + id,
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify({ "MaLoai": parseInt(id), "TenLoai": name, "TrangThai": stt })
+                })
+                    .done(function (msg) {
+                        alert(msg);
+                        location.reload();
+                    }).fail(function () { alert("Error") });
+            })
+
         </script>
     }
