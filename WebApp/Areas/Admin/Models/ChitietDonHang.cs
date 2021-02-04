@@ -11,14 +11,15 @@ namespace WebApp.Areas.Admin.Models
     {
         [Key]
         public int Id { get; set; }
-        [Column(TypeName = "nvarchar(100)")]
-        [Display(Name = "Tên sản phẩm")]
-        public string TenSPBill { get; set; }
         public int Quantity { get; set; }
-        public double ThanhTien { get; set; }
+        public decimal ThanhTien { get; set; }
         public int Madonhang { get; set; }
         [ForeignKey("Madonhang")]
         public virtual Donhang Dh { get; set; }
+        public int MaSP { get; set; }
+      
+        [ForeignKey("MaSP")]
+        public virtual SanPham SP { get; set; }
 
     }
 }

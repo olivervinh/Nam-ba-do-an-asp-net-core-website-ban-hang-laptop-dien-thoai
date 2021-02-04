@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebApp.Areas.Admin.Data;
 using WebApp.Areas.Admin.Models;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
@@ -17,10 +18,11 @@ namespace WebApp.Controllers
     {
 
         private readonly DataProviderContext _context;
-
-        public HomeController(DataProviderContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        public HomeController(DataProviderContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         //hiển thị category 
         public override void OnActionExecuted(ActionExecutedContext context)
@@ -28,7 +30,7 @@ namespace WebApp.Controllers
             ViewBag.ListLSP = _context.LoaiSPs.ToList();
             ViewBag.Thuonghieu = _context.Thuonghieus.ToList();
             ViewBag.Product = _context.SanPhams.ToList();
-            ViewBag.Cart = _context.CartItems.ToList();
+          
             base.OnActionExecuted(context);
         }
         public IActionResult cart()
@@ -184,47 +186,71 @@ namespace WebApp.Controllers
             string jsoncart = JsonConvert.SerializeObject(ls);
             session.SetString(CARTKEY, jsoncart);
         }
-
         [Route("/checkout")]
-        public IActionResult CheckOut([FromForm] string email, [FromForm] string address)
+        public async Task<IActionResult> CheckOut()
         {
-
-
-
-
             var cart = GetCartItems();
-            ViewBag.Cart = cart;
+            ViewBag.cart = GetCartItems();
             ViewBag.size = cart.Count;
-
-            // Xử lý khi đặt hàng
-
-            ViewBag.email = email;
-            ViewBag.address = address;
-
-
-            if (!string.IsNullOrEmpty(email))
-            {
-                // hãy tạo cấu trúc db lưu lại đơn hàng và xóa cart khỏi session
-
-                ClearCart();
-                RedirectToAction(nameof(Index));
-            }
-
             return View();
         }
+
+       
         [HttpPost]
-        public async Task<IActionResult> CheckOut(Donhang donhang, ChitietDonHang chitietDonHang)
+        [Route("/checkout")]
+        public async Task<IActionResult> CheckOut(ChitietDonHang chitiet,HDvaCTHD hDvaCTHD, int dem, Donhang donhang, List<ChitietDonHang> chitietDonHang /*[Bind("TongTien")] Donhang donhang, [Bind("Id,Quantity,ThanhTien,MaSP")] ChitietDonHang chitietDonHang*/)
         {
+           
+            var cart = GetCartItems();
+            ViewBag.cart = GetCartItems();
+            ViewBag.kb = from hd in _context.DonHangs
+                     join cthd in _context.ChitietDonHangs
+                     on hd.Id equals cthd.Madonhang
+                     select new { };
+
             var dh = from d in _context.DonHangs
                      select d;
-            int size = dh.Count();
+         
+            ViewBag.size = cart.Count;
+         
             if (ModelState.IsValid)
             {
-                _context.Add(donhang);
-                chitietDonHang.Madonhang = size++;
-                _context.Add(chitietDonHang);
+                var Sender = await _userManager.GetUserAsync(HttpContext.User);
+                if (User.Identity.IsAuthenticated)
+                {
+                    donhang.MaUser = Sender.Id;
+                }
+                else
+                {
+                    return RedirectToAction("_homePartial", "Home");
+                }
+                var oderdetail = new List<ChitietDonHang>();
+                donhang.Datecheckout = DateTime.Now;
+                decimal tam=0;
+               foreach(var item in cart)
+                {
+                    oderdetail.Add(new ChitietDonHang()
+                    {
+                        Quantity = item.quantity,
+                        MaSP = item.product.Ma,
+                        ThanhTien= item.product.Gia*item.quantity,
+                    
+                    });
+                    tam +=Convert.ToDecimal(item.product.Gia * item.quantity);
+                }
+                var co = new Donhang()
+                {
+                    MaUser = Sender.Id,
+                    Datecheckout = DateTime.Now,
+                    LstDH = oderdetail,
+                    TongTien=tam,
+
+                };
+
+                _context.Add(co);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(_homePartial));
             }
 
             return RedirectToAction(nameof(CheckOut));

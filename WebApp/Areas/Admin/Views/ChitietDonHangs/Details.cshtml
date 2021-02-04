@@ -1,0 +1,43 @@
+﻿@model WebApp.Areas.Admin.Models.ChitietDonHang
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ChitietDonHang</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ThanhTien)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ThanhTien)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Dh)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Dh.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SP)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SP.Color)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

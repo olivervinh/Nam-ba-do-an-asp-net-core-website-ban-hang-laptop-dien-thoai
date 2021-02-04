@@ -18,26 +18,13 @@ namespace WebApp.Areas.Admin.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
 
-        public DateTime Datecheckout { get; set; }
-        [Column(TypeName = "nvarchar(50)")]
-        [Display(Name = "Email khách")]
-      
-        public string EmailKhach { set; get; }
-   
+        public DateTime Datecheckout { get; set; } = DateTime.Now;
        
-        public double TongTienDonHang { set; get; }
-        [Column(TypeName = "nvarchar(100)")]
-        [Display(Name = "Địa chỉ")]
-        public string DiaChiShipping { set; get; }
-     
-        public int MaCartItem { get; set; }
-        [ForeignKey(" MaCartItem")]
-        public virtual CartItem CartItem { get; set; }
-     
         public string MaUser { get; set; }
         [ForeignKey("MaUser")]
-
-        public virtual IdentityUser IUser { get; set; }
+       
+        public virtual NguoiDung IUser { get; set; }
+        public decimal TongTien { get; set; }
         public ICollection<ChitietDonHang> LstDH { get; set; }
     }
 }

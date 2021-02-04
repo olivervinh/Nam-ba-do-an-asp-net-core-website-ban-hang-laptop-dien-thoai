@@ -82,6 +82,10 @@ namespace WebApp.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -133,6 +137,8 @@ namespace WebApp.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -219,7 +225,7 @@ namespace WebApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("WebApp.Areas.Admin.Models.CartItem", b =>
+            modelBuilder.Entity("WebApp.Areas.Admin.Models.ChitietDonHang", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -229,42 +235,18 @@ namespace WebApp.Migrations
                     b.Property<int>("MaSP")
                         .HasColumnType("int");
 
-                    b.Property<double>("ThanhTien")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TongTien")
-                        .HasColumnType("float");
-
-                    b.Property<int>("quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MaSP");
-
-                    b.ToTable("CartItems");
-                });
-
-            modelBuilder.Entity("WebApp.Areas.Admin.Models.ChitietDonHang", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
                     b.Property<int>("Madonhang")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("TenSPBill")
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<double>("ThanhTien")
-                        .HasColumnType("float");
+                    b.Property<decimal>("ThanhTien")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MaSP");
 
                     b.HasIndex("Madonhang");
 
@@ -281,24 +263,13 @@ namespace WebApp.Migrations
                     b.Property<DateTime>("Datecheckout")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DiaChiShipping")
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("EmailKhach")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("MaCartItem")
-                        .HasColumnType("int");
-
                     b.Property<string>("MaUser")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<double>("TongTienDonHang")
-                        .HasColumnType("float");
+                    b.Property<decimal>("TongTien")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MaCartItem");
 
                     b.HasIndex("MaUser");
 
@@ -431,6 +402,16 @@ namespace WebApp.Migrations
                     b.ToTable("Thuonghieus");
                 });
 
+            modelBuilder.Entity("WebApp.Areas.Admin.Models.NguoiDung", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasDiscriminator().HasValue("NguoiDung");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -482,19 +463,14 @@ namespace WebApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WebApp.Areas.Admin.Models.CartItem", b =>
+            modelBuilder.Entity("WebApp.Areas.Admin.Models.ChitietDonHang", b =>
                 {
-                    b.HasOne("WebApp.Areas.Admin.Models.SanPham", "product")
+                    b.HasOne("WebApp.Areas.Admin.Models.SanPham", "SP")
                         .WithMany()
                         .HasForeignKey("MaSP")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("product");
-                });
-
-            modelBuilder.Entity("WebApp.Areas.Admin.Models.ChitietDonHang", b =>
-                {
                     b.HasOne("WebApp.Areas.Admin.Models.Donhang", "Dh")
                         .WithMany("LstDH")
                         .HasForeignKey("Madonhang")
@@ -502,21 +478,15 @@ namespace WebApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Dh");
+
+                    b.Navigation("SP");
                 });
 
             modelBuilder.Entity("WebApp.Areas.Admin.Models.Donhang", b =>
                 {
-                    b.HasOne("WebApp.Areas.Admin.Models.CartItem", "CartItem")
-                        .WithMany()
-                        .HasForeignKey("MaCartItem")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IUser")
+                    b.HasOne("WebApp.Areas.Admin.Models.NguoiDung", "IUser")
                         .WithMany()
                         .HasForeignKey("MaUser");
-
-                    b.Navigation("CartItem");
 
                     b.Navigation("IUser");
                 });

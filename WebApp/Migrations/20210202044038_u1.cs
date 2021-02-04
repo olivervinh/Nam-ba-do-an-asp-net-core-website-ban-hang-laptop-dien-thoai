@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApp.Migrations
 {
-    public partial class _1 : Migration
+    public partial class u1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,6 +26,8 @@ namespace WebApp.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -80,7 +82,8 @@ namespace WebApp.Migrations
                     MaThuonghieu = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TenTH = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Hinh = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true)
+                    Hinh = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true),
+                    Trangthai = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -194,6 +197,27 @@ namespace WebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DonHangs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Datecheckout = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MaUser = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DonHangs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DonHangs_AspNetUsers_MaUser",
+                        column: x => x.MaUser,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SanPhams",
                 columns: table => new
                 {
@@ -232,23 +256,31 @@ namespace WebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CartItems",
+                name: "ChitietDonHangs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    quantity = table.Column<int>(type: "int", nullable: false),
-                    productMa = table.Column<int>(type: "int", nullable: true)
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    ThanhTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Madonhang = table.Column<int>(type: "int", nullable: false),
+                    MaSP = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartItems", x => x.Id);
+                    table.PrimaryKey("PK_ChitietDonHangs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CartItems_SanPhams_productMa",
-                        column: x => x.productMa,
+                        name: "FK_ChitietDonHangs_DonHangs_Madonhang",
+                        column: x => x.Madonhang,
+                        principalTable: "DonHangs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChitietDonHangs_SanPhams_MaSP",
+                        column: x => x.MaSP,
                         principalTable: "SanPhams",
                         principalColumn: "Ma",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -291,9 +323,19 @@ namespace WebApp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartItems_productMa",
-                table: "CartItems",
-                column: "productMa");
+                name: "IX_ChitietDonHangs_Madonhang",
+                table: "ChitietDonHangs",
+                column: "Madonhang");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChitietDonHangs_MaSP",
+                table: "ChitietDonHangs",
+                column: "MaSP");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DonHangs_MaUser",
+                table: "DonHangs",
+                column: "MaUser");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SanPhams_MaLoai",
@@ -324,7 +366,7 @@ namespace WebApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CartItems");
+                name: "ChitietDonHangs");
 
             migrationBuilder.DropTable(
                 name: "Members");
@@ -333,10 +375,13 @@ namespace WebApp.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "DonHangs");
 
             migrationBuilder.DropTable(
                 name: "SanPhams");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "LoaiSPs");
